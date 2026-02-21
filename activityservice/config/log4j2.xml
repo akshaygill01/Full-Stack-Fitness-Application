@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="10" status="WARN">
+
+    <Properties>
+
+        <!-- Colored console logs -->
+        <Property name="CONSOLE_LOG_PATTERN">
+            %highlight{%d{dd-MM-yyyy HH:mm:ss.SSS} %-5p} %C{1}.%M:%L : %msg%n%throwable
+        </Property>
+
+        <!-- Plain file logs -->
+        <Property name="LOG_PATTERN">
+            %d{dd-MM-yyyy HH:mm:ss.SSS} %-5p %C{1}.%M:%L : %msg%n%throwable
+        </Property>
+
+        <Property name="LOG_DIR">${spring:log.dir}</Property>
+        <Property name="APP_NAME">user-service</Property>
+
+    </Properties>
+
+
+    <Appenders>
+
+        <!-- Console Appender -->
+        <Console name="CONSOLE" target="SYSTEM_OUT">
+            <PatternLayout
+                    pattern="${CONSOLE_LOG_PATTERN}"
+                    disableAnsi="false"
+                    noConsoleNoAnsi="false"/>
+        </Console>
+
+        <!-- Main Rolling File Appender -->
+        <RollingFile
+                name="FILE"
+                fileName="${LOG_DIR}/${APP_NAME}.log"
+                filePattern="${LOG_DIR}/${APP_NAME}-%d{yyyy-MM-dd}.log">
+
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+
+            <Policies>
+                <!-- Daily rolling ( create new file daily date-wise or if file size exceeds 250mb ) -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <!--  size based rolling -->
+                <SizeBasedTriggeringPolicy size="250MB"/>
+            </Policies>
+
+            <!-- keep only last x days file -->
+            <DefaultRolloverStrategy max="5"/>
+
+        </RollingFile>
+
+
+        <!--  Error Rolling File Appender  -->
+        <RollingFile
+                name="ERROR_FILE"
+                fileName="${LOG_DIR}/error/${APP_NAME}-error.log"
+                filePattern="${LOG_DIR}/error/${APP_NAME}-error-%d{yyyy-MM-dd}.log">
+
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+
+            <!-- Only ERROR logs -->
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+
+            <Policies>
+                <!-- Daily rolling -->
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+
+            <!-- Keep last 10 days -->
+            <DefaultRolloverStrategy max="10"/>
+
+        </RollingFile>
+
+    </Appenders>
+
+
+    <Loggers>
+
+        <!-- Application package -->
+        <Logger name="com.fitness.activityservice" level="DEBUG" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+            <AppenderRef ref="ERROR_FILE"/>
+        </Logger>
+
+        <!-- Root logger -->
+        <Root level="INFO">
+            <AppenderRef ref="CONSOLE"/>
+            <AppenderRef ref="FILE"/>
+            <AppenderRef ref="ERROR_FILE"/>
+        </Root>
+
+    </Loggers>
+
+</Configuration>
