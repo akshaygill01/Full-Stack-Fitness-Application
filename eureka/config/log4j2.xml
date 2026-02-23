@@ -14,7 +14,7 @@
         </Property>
 
         <Property name="LOG_DIR">${spring:log.dir}</Property>
-        <Property name="APP_NAME">user-service</Property>
+        <Property name="APP_NAME">eureka-server</Property>
 
     </Properties>
 
@@ -79,7 +79,7 @@
     <Loggers>
 
         <!-- Application package -->
-        <Logger name="com.fitness.activityservice" level="DEBUG" additivity="false">
+        <Logger name="com.fitness.eureka" level="DEBUG" additivity="false">
             <AppenderRef ref="CONSOLE"/>
             <AppenderRef ref="FILE"/>
             <AppenderRef ref="ERROR_FILE"/>

@@ -14,7 +14,7 @@
         </Property>
 
         <Property name="LOG_DIR">${spring:log.dir}</Property>
-        <Property name="APP_NAME">user-service</Property>
+        <Property name="APP_NAME">activity-service</Property>
 
     </Properties>
 
