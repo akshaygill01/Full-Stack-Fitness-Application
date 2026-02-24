@@ -38,4 +38,12 @@ public class UserController {
         return ResponseEntity.ok(ApiResponse.success(response));
     }
 
+    @GetMapping("/{id}/validate")
+    public ResponseEntity<ApiResponse<?>> validateUserById(@PathVariable String id) {
+        log.info("validate user req, id: {}", id);
+
+        boolean isExist = userService.existsById(id);
+        return ResponseEntity.ok(ApiResponse.success(isExist));
+    }
+
 }

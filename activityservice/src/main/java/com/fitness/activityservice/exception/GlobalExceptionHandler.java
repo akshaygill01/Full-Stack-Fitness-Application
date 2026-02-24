@@ -2,6 +2,7 @@ package com.fitness.activityservice.exception;
 
 
 import com.fitness.activityservice.util.ApiResponse;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestControllerAdvice
+@Log4j2
 public class GlobalExceptionHandler {
 
     /**
@@ -20,6 +22,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Object>> handleValidationException(MethodArgumentNotValidException ex) {
+        log.error("exception occurred: {}", ex.getMessage(), ex);
 
         Map<String, String> errors = new HashMap<>();
 
@@ -37,6 +40,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiResponse<Object>> handleRuntimeException(RuntimeException ex) {
+        log.error("exception occurred: {}", ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ApiResponse.failure(ex.getMessage()));
     }
 
@@ -45,6 +49,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGlobalException(Exception ex) {
+        log.error("exception occurred: {}", ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ApiResponse.failure("Something went wrong"));
     }
+
+
 }

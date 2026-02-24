@@ -3,18 +3,18 @@ package com.fitness.activityservice.util;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Getter
+@Setter
+@NoArgsConstructor
 public class ApiResponse<T> {
 
     private String status;
     private String message;
     private T data;
-
-    // Private constructor
-    private ApiResponse() {
-    }
 
     // All args constructor
     private ApiResponse(String status, String message, T data) {

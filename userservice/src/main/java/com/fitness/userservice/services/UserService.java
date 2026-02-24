@@ -36,4 +36,8 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         return mapper.toUserResponse(user);
     }
+
+    public boolean existsById(String id) {
+        return userRepository.existsById(id);
+    }
 }
